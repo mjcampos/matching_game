@@ -1,7 +1,20 @@
 /*
  * Create a list that holds all of your cards
  */
+function getCardList() {
+	var cardArr = [];
+	var list = document.getElementsByClassName("deck")[0].childNodes;
 
+	for(var i = 0; i < list.length; i++) {
+		if (typeof list[i].value !== 'undefined') {
+			cardArr.push(list[i].childNodes[1].className);
+		};
+	}
+
+	return cardArr;
+}
+
+getCardList();
 
 /*
  * Display the cards on the page
