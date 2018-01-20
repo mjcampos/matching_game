@@ -57,6 +57,12 @@ function newGame() {
 
 	// Reset the moves counter
 	incrementMoves(moves);
+
+	// Reset the stars
+	resetStars();
+
+	// Reset timer
+	resetTimer();
 }
 
 // When the webpage first loads up a new game is launched
@@ -73,10 +79,13 @@ newGame();
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
  var openCards, matchedCards = [];
- var moves = 0;
+ var starCount = 3;
+ var moves, timer = 0;
+ var myTimer;
+
 
 function flipCard(card) {
-	var deckSize = 16;
+	var deckSize = 2;
 
 	if (card.path[0].className === "card") {
 		card.path[0].className = "card open show";
@@ -90,14 +99,16 @@ function flipCard(card) {
 				matchedCards.push(card.path[0].childNodes[1].className);
 
 				if (matchedCards.length === deckSize) {
-					var playerRes = confirm("Congratulations!\nYou beat this game in " + moves + " moves. Want to play again");
+					var playerRes = confirm("Congratulations!\nYou beat this game in " + moves + " moves\nYou've earned " + starCount + " stars!\n And it took you " + timer + " Seconds!\nWant to play again");
 
 					// If player decides they want to play a new game, create new game then exit function
 					if (playerRes) {
 						newGame();
+					} else {
+						clearTimeout(myTimer);
+					}
 
-						return;
-					};
+					return;
 				};
 			} else{
 				poppedCard.className = card.path[0].className = "card";
@@ -113,4 +124,35 @@ function flipCard(card) {
 
 function incrementMoves(moves) {
 	document.getElementsByClassName("moves")[0].innerHTML = moves;
+	monitorStars(moves);
+}
+
+function monitorStars(moves) {
+	if ((moves >= 5) && (moves < 10)) {
+		document.getElementsByClassName("stars")[0].childNodes[5].childNodes[0].className = "fa-star";
+		starCount = 2;
+	} else if (moves >= 10) {
+		document.getElementsByClassName("stars")[0].childNodes[3].childNodes[0].className = "fa-star";
+		starCount = 1;
+	}
+}
+
+function resetStars() {
+	// fill in all the stars
+	document.getElementsByClassName("stars")[0].childNodes[3].childNodes[0].className = "fa fa-star";
+	document.getElementsByClassName("stars")[0].childNodes[5].childNodes[0].className = "fa fa-star";
+
+	// reset the starCount global variable to 3
+	starCount = 3;
+}
+
+function resetTimer() {
+	timer = 0;
+
+	// Clear out the previous timer
+	clearTimeout(myTimer);
+
+	myTimer = setInterval(function() {
+		document.getElementsByClassName("timer")[0].innerHTML = timer++;
+	}, 1000);
 }
