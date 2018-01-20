@@ -14,8 +14,6 @@ function getCardList() {
 	return cardArr;
 }
 
-getCardList();
-
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -38,6 +36,24 @@ function shuffle(array) {
     return array;
 }
 
+function newGame() {
+	var list = shuffle(getCardList());  // Get new array of cards
+	var deck = document.getElementsByClassName("deck")[0];
+	var card;
+
+	for(var i = 0; i < deck.childNodes.length; i++) {
+		if (typeof deck.childNodes[i].value !== 'undefined') {
+			card = list.pop();
+
+			deck.childNodes[i].childNodes[1].className = card;
+			deck.childNodes[i].className = "card";
+			deck.childNodes[i].onclick = (card) => flipCard(card);
+		};
+	}
+}
+
+// When the webpage first loads up a new game is launched
+newGame();
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -49,3 +65,7 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+function flipCard(card) {
+	card.path[0].className = "card open show";
+}
