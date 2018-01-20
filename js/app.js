@@ -50,6 +50,13 @@ function newGame() {
 			deck.childNodes[i].onclick = (card) => flipCard(card);
 		};
 	}
+
+	// Reset all the global variables
+	openCards = [];
+	moves = 0;
+
+	// Reset the moves counter
+	document.getElementsByClassName("moves")[0].innerHTML = moves;
 }
 
 // When the webpage first loads up a new game is launched
@@ -66,6 +73,7 @@ newGame();
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
  var openCards = [];
+ var moves = 0;
 
 function flipCard(card) {
 	if (card.path[0].className === "card") {
@@ -79,4 +87,11 @@ function flipCard(card) {
 			openCards.push(card.path[0]);
 		}
 	};
+
+	// Increment the moves counter by 1
+	incrementMoves();
+}
+
+function incrementMoves() {
+	document.getElementsByClassName("moves")[0].innerHTML = ++moves;
 }
