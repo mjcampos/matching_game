@@ -56,7 +56,7 @@ function newGame() {
 	moves = 0;
 
 	// Reset the moves counter
-	document.getElementsByClassName("moves")[0].innerHTML = moves;
+	incrementMoves(moves);
 }
 
 // When the webpage first loads up a new game is launched
@@ -72,26 +72,47 @@ newGame();
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
- var openCards = [];
+ var openCards, matchedCards = [];
  var moves = 0;
 
 function flipCard(card) {
+	var deckSize = 16;
+
 	if (card.path[0].className === "card") {
 		card.path[0].className = "card open show";
 
 		if (openCards.length) {
 			var poppedCard = openCards.pop();
 
-			poppedCard.className = card.path[0].className = (poppedCard.childNodes[1].className === card.path[0].childNodes[1].className) ? "card match" : "card";
+			// poppedCard.className = card.path[0].className = (poppedCard.childNodes[1].className === card.path[0].childNodes[1].className) ? "card match" : "card";
+
+			if (poppedCard.childNodes[1].className === card.path[0].childNodes[1].className) {
+				poppedCard.className = card.path[0].className = "card match";
+				matchedCards.push(poppedCard.childNodes[1].className);
+				matchedCards.push(card.path[0].childNodes[1].className);
+
+				if (matchedCards.length === deckSize) {
+					var playerRes = confirm("Congratulations!\nYou beat this game in " + moves + " moves. Want to play again");
+
+					// If player decides they want to play a new game, create new game then exit function
+					if (playerRes) {
+						newGame();
+
+						return;
+					};
+				};
+			} else{
+				poppedCard.className = card.path[0].className = "card";
+			};
 		} else {
 			openCards.push(card.path[0]);
 		}
 	};
 
 	// Increment the moves counter by 1
-	incrementMoves();
+	incrementMoves(++moves);
 }
 
-function incrementMoves() {
-	document.getElementsByClassName("moves")[0].innerHTML = ++moves;
+function incrementMoves(moves) {
+	document.getElementsByClassName("moves")[0].innerHTML = moves;
 }
