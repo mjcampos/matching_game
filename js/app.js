@@ -91,28 +91,30 @@ function flipCard(card) {
 		card.path[0].className = "card open show";
 
 		if (openCards.length) {
-			var poppedCard = openCards.pop();
+			setTimeout(function() {
+				var poppedCard = openCards.pop();
 
-			if (poppedCard.childNodes[1].className === card.path[0].childNodes[1].className) {
-				poppedCard.className = card.path[0].className = "card match";
-				matchedCards.push(poppedCard.childNodes[1].className);
-				matchedCards.push(card.path[0].childNodes[1].className);
+				if (poppedCard.childNodes[1].className === card.path[0].childNodes[1].className) {
+					poppedCard.className = card.path[0].className = "card match";
+					matchedCards.push(poppedCard.childNodes[1].className);
+					matchedCards.push(card.path[0].childNodes[1].className);
 
-				if (matchedCards.length === deckSize) {
-					var playerRes = confirm("Congratulations!\nYou beat this game in " + moves + " moves\nYou've earned " + starCount + " stars!\n And it took you " + timer + " Seconds!\nWant to play again");
+					if (matchedCards.length === deckSize) {
+						var playerRes = confirm("Congratulations!\nYou beat this game in " + moves + " moves\nYou've earned " + starCount + " stars!\n And it took you " + timer + " Seconds!\nWant to play again");
 
-					// If player decides they want to play a new game, create new game then exit function
-					if (playerRes) {
-						newGame();
-					} else {
-						clearTimeout(myTimer);
-					}
+						// If player decides they want to play a new game, create new game then exit function
+						if (playerRes) {
+							newGame();
+						} else {
+							clearTimeout(myTimer);
+						}
 
-					return;
+						return;
+					};
+				} else{
+					poppedCard.className = card.path[0].className = "card";
 				};
-			} else{
-				poppedCard.className = card.path[0].className = "card";
-			};
+			}, 100);
 		} else {
 			openCards.push(card.path[0]);
 		}
