@@ -84,8 +84,6 @@ function flipCard(card) {
 		if (openCards.length) {
 			var poppedCard = openCards.pop();
 
-			// poppedCard.className = card.path[0].className = (poppedCard.childNodes[1].className === card.path[0].childNodes[1].className) ? "card match" : "card";
-
 			if (poppedCard.childNodes[1].className === card.path[0].childNodes[1].className) {
 				poppedCard.className = card.path[0].className = "card match";
 				matchedCards.push(poppedCard.childNodes[1].className);
