@@ -85,7 +85,7 @@ newGame();
 
 
 function flipCard(card) {
-	var deckSize = 2;
+	var deckSize = 16;
 
 	if (card.path[0].className === "card") {
 		card.path[0].className = "card open show";
