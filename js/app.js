@@ -52,7 +52,7 @@ function newGame() {
 	}
 
 	// Reset all the global variables
-	openCards = [];
+	openCards = matchedCards = [];
 	moves = 0;
 
 	// Reset the moves counter
@@ -83,23 +83,26 @@ newGame();
  var moves, timer = 0;
  var myTimer;
 
-
 function flipCard(card) {
 	var deckSize = 16;
 
-	if (card.path[0].className === "card") {
+	if (card.path[0].className === "card")  {
 		card.path[0].className = "card open show";
 
-		if (openCards.length) {
+		if (openCards.push(card.path[0]) > 1) {
+			var card1 = openCards.pop();
+			var card2 = openCards.pop();
+
+			// Wait 1 second to let the user see their second selection
 			setTimeout(function() {
-				var poppedCard = openCards.pop();
+				if (card1.childNodes[1].className === card2.childNodes[1].className) {
+					card1.className = card2.className = "card match";
 
-				if (poppedCard.childNodes[1].className === card.path[0].childNodes[1].className) {
-					poppedCard.className = card.path[0].className = "card match";
-					matchedCards.push(poppedCard.childNodes[1].className);
-					matchedCards.push(card.path[0].childNodes[1].className);
+					// Push matched cards into matchedCards array that tracks all the cards that have been matched
+					matchedCards.push(card1.childNodes[1].className);
+					matchedCards.push(card2.childNodes[1].className);
 
-					if (matchedCards.length === deckSize) {
+					if (matchedCards.length >= deckSize) {
 						var playerRes = confirm("Congratulations!\nYou beat this game in " + moves + " moves\nYou've earned " + starCount + " stars!\n And it took you " + timer + " Seconds!\nWant to play again");
 
 						// If player decides they want to play a new game, create new game then exit function
@@ -108,20 +111,15 @@ function flipCard(card) {
 						} else {
 							clearTimeout(myTimer);
 						}
-
-						return;
 					};
-				} else{
-					poppedCard.className = card.path[0].className = "card";
-				};
-			}, 100);
-		} else {
-			openCards.push(card.path[0]);
-		}
-	};
-
-	// Increment the moves counter by 1
-	incrementMoves(++moves);
+				} else {
+					card1.className = card2.className = "card";
+				}
+				// Increment the moves counter by 1
+				incrementMoves(++moves);
+			}, 500);
+		};
+	}
 }
 
 function incrementMoves(moves) {
