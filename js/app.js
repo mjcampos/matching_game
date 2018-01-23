@@ -128,10 +128,10 @@ function incrementMoves(moves) {
 }
 
 function monitorStars(moves) {
-	if ((moves >= 5) && (moves < 10)) {
+	if ((moves >= 10) && (moves < 15)) {
 		document.getElementsByClassName("stars")[0].childNodes[5].childNodes[0].className = "fa-star";
 		starCount = 2;
-	} else if (moves >= 10) {
+	} else if (moves >= 15) {
 		document.getElementsByClassName("stars")[0].childNodes[3].childNodes[0].className = "fa-star";
 		starCount = 1;
 	}
