@@ -47,7 +47,7 @@ function newGame() {
 
 			deck.childNodes[i].childNodes[1].className = card;
 			deck.childNodes[i].className = "card";
-			deck.childNodes[i].onclick = (card) => flipCard(card);
+			deck.childNodes[i].onclick = card => flipCard(card);
 		};
 	}
 
@@ -85,6 +85,9 @@ newGame();
 
 function flipCard(card) {
 	var deckSize = 16;
+
+	// Check if timer is working. If not then make it work
+	if(moves === 0) startTimer();
 
 	if (card.path[0].className === "card")  {
 		card.path[0].className = "card open show";
@@ -150,6 +153,13 @@ function resetStars() {
 function resetTimer() {
 	timer = 0;
 
+	// Clear out the previous timer
+	clearTimeout(myTimer);
+
+	document.getElementsByClassName("timer")[0].innerHTML = timer;
+}
+
+function startTimer() {
 	// Clear out the previous timer
 	clearTimeout(myTimer);
 
