@@ -89,11 +89,12 @@ function flipCard(card) {
 	if (card.path[0].className === "card")  {
 		card.path[0].className = "card open show";
 
+		// Push card into openCards array then check if the openCards deck has at least two cards. If so then remove them and begin comparing them. 
 		if (openCards.push(card.path[0]) > 1) {
 			var card1 = openCards.pop();
 			var card2 = openCards.pop();
 
-			// Wait 1 second to let the user see their second selection
+			// Wait 1/2 seconds to let the user see their second selection
 			setTimeout(function() {
 				if (card1.childNodes[1].className === card2.childNodes[1].className) {
 					card1.className = card2.className = "card match";
