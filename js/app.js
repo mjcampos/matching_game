@@ -92,8 +92,11 @@ function flipCard(card) {
 	if (card.path[0].className === "card")  {
 		card.path[0].className = "card open show";
 
-		// Push card into openCards array then check if the openCards deck has an even number of cards
-		if (openCards.push(card.path[0]) && (openCards.length % 2 === 0)) {
+		// Push card into openCards array
+		openCards.push(card.path[0])
+
+		// check if the openCards deck has an even number of cards
+		if (openCards.length % 2 === 0) {
 			// If so then pop the first two from the array and begin comparing them
 			var card1 = openCards.pop();
 			var card2 = openCards.pop();
@@ -103,28 +106,42 @@ function flipCard(card) {
 				// Increment the moves counter by 1
 				incrementMoves(++moves);
 
-				if (card1.childNodes[1].className === card2.childNodes[1].className) {
-					card1.className = card2.className = "card match";
+				try {
+					if (card1.childNodes[1].className === card2.childNodes[1].className) {
+						card1.className = card2.className = "card match";
 
-					// Push matched cards into matchedCards array that tracks all the cards that have been matched
-					matchedCards.push(card1.childNodes[1].className);
-					matchedCards.push(card2.childNodes[1].className);
+						// Push matched cards into matchedCards array that tracks all the cards that have been matched
+						matchedCards.push(card1.childNodes[1].className);
+						matchedCards.push(card2.childNodes[1].className);
 
-					if (matchedCards.length >= deckSize) {
-						// At this point the game is complete and the timer should stop
-						stopTimer();
+						if (matchedCards.length >= deckSize) {
+							// At this point the game is complete and the timer should stop
+							stopTimer();
 
-						var playerMessage = `<p>Congratulations!</p><p>You beat this game in ${moves} moves</p><p>You've earned ${starCount} stars!</p><p>And it took you ${timer} Seconds!</p><p>Want to play again</p>`;
-						
-						var modal = document.getElementById('winnerModal');
-						var modalMessage = document.getElementById('modalMessage');
+							var playerMessage = `<p>Congratulations!</p><p>You beat this game in ${moves} moves</p><p>You've earned ${starCount} stars!</p><p>And it took you ${timer} Seconds!</p><p>Want to play again</p>`;
+							
+							var modal = document.getElementById('winnerModal');
+							var modalMessage = document.getElementById('modalMessage');
 
-						// Insert player message into modal then display it
-						modalMessage.innerHTML = playerMessage;
-						modal.style.display = "block";
-					};
-				} else {
-					card1.className = card2.className = "card";
+							// Insert player message into modal then display it
+							modalMessage.innerHTML = playerMessage;
+							modal.style.display = "block";
+						};
+					} else {
+						card1.className = card2.className = "card";
+					}
+				} catch(e) {
+					// Sometimes errors happen for reasons that are not yet understood. In such a case we'll console log the error and close all currently open cards
+					console.error(e);
+
+					for(var i = 0; i < openCards.length; i++) {
+						openCards[i].className = "card";
+					}
+
+					openCards = [];
+
+					// Also don't forget to close the currently selected card, assuming it's opened
+					card.path[0].className = "card";
 				}
 			}, 500);
 		};
