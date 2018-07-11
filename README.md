@@ -14,3 +14,4 @@
 ## Sources
 * Twitter Bootstrap - [https://getbootstrap.com/](https://getbootstrap.com/)
 * Markdown (for creating README.md content) - [https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links)
+* How To - CSS/JS Modal (W3 instructions for how to create modals) [https://www.w3schools.com/howto/howto_css_modals.asp](https://www.w3schools.com/howto/howto_css_modals.asp)
