@@ -100,6 +100,9 @@ function flipCard(card) {
 
 			// Wait 1/2 seconds to let the user see their second selection
 			setTimeout(function() {
+				// Increment the moves counter by 1
+				incrementMoves(++moves);
+
 				if (card1.childNodes[1].className === card2.childNodes[1].className) {
 					card1.className = card2.className = "card match";
 
@@ -108,20 +111,21 @@ function flipCard(card) {
 					matchedCards.push(card2.childNodes[1].className);
 
 					if (matchedCards.length >= deckSize) {
-						var playerRes = confirm("Congratulations!\nYou beat this game in " + moves + " moves\nYou've earned " + starCount + " stars!\n And it took you " + timer + " Seconds!\nWant to play again");
+						// At this point the game is complete and the timer should stop
+						stopTimer();
 
-						// If player decides they want to play a new game, create new game then exit function
-						if (playerRes) {
-							newGame();
-						} else {
-							clearTimeout(myTimer);
-						}
+						var playerMessage = `<p>Congratulations!</p><p>You beat this game in ${moves} moves</p><p>You've earned ${starCount} stars!</p><p>And it took you ${timer} Seconds!</p><p>Want to play again</p>`;
+						
+						var modal = document.getElementById('winnerModal');
+						var modalMessage = document.getElementById('modalMessage');
+
+						// Insert player message into modal then display it
+						modalMessage.innerHTML = playerMessage;
+						modal.style.display = "block";
 					};
 				} else {
 					card1.className = card2.className = "card";
 				}
-				// Increment the moves counter by 1
-				incrementMoves(++moves);
 			}, 500);
 		};
 	}
@@ -166,5 +170,11 @@ function startTimer() {
 
 	myTimer = setInterval(function() {
 		document.getElementsByClassName("timer")[0].innerHTML = timer++;
+	}, 1000);
+}
+
+function stopTimer() {
+	setTimeout(function() {
+		clearTimeout(myTimer);
 	}, 1000);
 }
