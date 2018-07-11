@@ -92,8 +92,9 @@ function flipCard(card) {
 	if (card.path[0].className === "card")  {
 		card.path[0].className = "card open show";
 
-		// Push card into openCards array then check if the openCards deck has at least two cards. If so then remove them and begin comparing them. 
-		if (openCards.push(card.path[0]) > 1) {
+		// Push card into openCards array then check if the openCards deck has an even number of cards
+		if (openCards.push(card.path[0]) && (openCards.length % 2 === 0)) {
+			// If so then pop the first two from the array and begin comparing them
 			var card1 = openCards.pop();
 			var card2 = openCards.pop();
 
